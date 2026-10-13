@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>坎友会 Guardian Guild - 坎特伯雷公主与骑士同人卡牌游戏 GTCG</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo" data-page="home">坎友会<small>GUARDIAN GUILD · GTCG</small></div>
+  <div class="nav-links">
+    <a data-page="home">首页</a>
+    <a data-page="cards">坎友卡牌中心</a>
+    <a data-page="play">线上试玩</a>
+    <a data-page="community">坎友圈</a>
+    <a data-page="rules">规则书</a>
+  </div>
+</nav>
+
+<!-- ========== 首页 ========== -->
+<main id="page-home" class="page">
+  <div class="hero">
+    <h1>坎<span>友</span>会</h1>
+    <p class="sub">坎特伯雷公主与骑士 · 唤醒冠军之剑的奇幻冒险 —— 同人卡牌游戏 GTCG<br><span style="font-size:13px;letter-spacing:5px;color:var(--gold-dim)">GUARDIAN GUILD · GUARDIAN TALES CARD GAME</span></p>
+    <div class="cta">
+      <a class="btn primary" data-page="cards">进入坎友卡牌中心</a>
+      <a class="btn" data-page="play">⚔️ 线上试玩</a>
+      <a class="btn" data-page="rules">查看规则书</a>
+    </div>
+  </div>
+
+  <div class="home-cards" id="home-cards"></div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="num" id="stat-total">24</div><div class="label">第一弹卡牌</div></div>
+    <div class="stat"><div class="num" id="stat-char">13</div><div class="label">角色卡</div></div>
+    <div class="stat"><div class="num" id="stat-event">8</div><div class="label">事件卡</div></div>
+    <div class="stat"><div class="num">3</div><div class="label">装备卡</div></div>
+  </div>
+
+  <div class="section-title">探索坎友会</div>
+  <div class="feature-grid">
+    <div class="feature" data-page="cards">
+      <div class="icon">🃏</div>
+      <h3>坎友卡牌中心</h3>
+      <p>第一弹全部卡牌在线查询：按卡名搜索，按类型、阵营、属性、费用、关键词筛选，点击卡牌查看大图与完整效果文本。</p>
+    </div>
+    <div class="feature" data-page="rules">
+      <div class="icon">📜</div>
+      <h3>规则书 0.1</h3>
+      <p>第一版正式规则：卡组构筑、回合流程、能量支付、战斗结算、共鸣值与冠军之剑胜利条件，完整可执行。</p>
+    </div>
+    <div class="feature" data-page="community">
+      <div class="icon">💬</div>
+      <h3>坎友圈</h3>
+      <p>坎友们的讨论社区：综合闲聊、卡牌讨论、规则讨论、同人创作、组队招新五个版块，发帖回帖、点赞交流，聊聊你心中的最强卡组。</p>
+    </div>
+    <div class="feature" data-page="cards">
+      <div class="icon">⚔️</div>
+      <h3>关键词图鉴</h3>
+      <p>守护、突袭、响应、泛用、重整……卡牌中出现的每一个关键词都能在卡牌中心查到卡面定义。</p>
+    </div>
+  </div>
+</main>
+
+<!-- ========== 坎友卡牌中心 ========== -->
+<main id="page-cards" class="page">
+  <div class="section-title" style="margin-top:8px">坎友卡牌中心</div>
+
+  <div class="tabs" id="cards-tabs">
+    <button class="tab on" data-tab="codex">卡牌图鉴</button>
+    <button class="tab" data-tab="deck">我的卡组</button>
+  </div>
+
+  <div id="tab-codex">
+  <div class="toolbar">
+    <div class="search-box">
+      <input id="search-input" type="text" placeholder="搜索卡名、阵营、效果文本…（如：神威门、守护、抽牌）">
+    </div>
+    <select id="sort-select" class="sort-select">
+      <option value="default">默认排序（类型）</option>
+      <option value="cost-asc">费用 从低到高</option>
+      <option value="cost-desc">费用 从高到低</option>
+      <option value="power-desc">战力 从高到低</option>
+      <option value="name">卡名拼音</option>
+    </select>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-group" id="f-type" data-key="type"></div>
+    <div class="filter-group" id="f-faction" data-key="faction"></div>
+    <div class="filter-group" id="f-attr" data-key="attr"></div>
+    <div class="filter-group" id="f-cost" data-key="cost"></div>
+    <div class="filter-group" id="f-keyword" data-key="keyword"></div>
+  </div>
+
+  <div class="result-info" id="result-info"></div>
+  <div class="card-grid" id="card-grid"></div>
+  </div><!-- /tab-codex -->
+
+  <!-- ========== 我的卡组（构筑器） ========== -->
+  <div id="tab-deck" style="display:none">
+    <p class="deck-lead">自由构筑你的卡组：<b>固定 40 张、同名最多 4 张</b>，冠军之剑开局就在 EX ZONE，不占卡组位置。两套卡组分别用于线上试玩——<b>你对战用其中一套，AI 自动使用另一套</b>。改动即时保存在本机浏览器。</p>
+
+    <div class="deck-slots" id="deck-slots"></div>
+
+    <div class="deck-editor">
+      <div class="deck-panel deck-pool-panel">
+        <div class="dp-head">
+          <span class="dp-title">卡池 · 点选加入 <b id="deck-cur-name"></b></span>
+          <input id="deck-pool-search" type="text" placeholder="搜索卡名 / 阵营 / 效果…">
+        </div>
+        <div class="deck-pool-filters" id="deck-pool-filters"></div>
+        <div class="deck-pool-grid" id="deck-pool"></div>
+      </div>
+      <div class="deck-panel deck-side-panel">
+        <div class="dp-head"><span class="dp-title">当前卡组 <span id="deck-count"></span></span></div>
+        <div class="deck-actions">
+          <button class="btn tiny" id="deck-rename">重命名</button>
+          <button class="btn tiny" id="deck-reset">恢复预设</button>
+          <button class="btn tiny" id="deck-clear">清空</button>
+          <button class="btn tiny" id="deck-export">导出清单</button>
+        </div>
+        <div class="deck-curve" id="deck-curve"></div>
+        <div class="deck-list" id="deck-list"></div>
+        <p class="deck-hint">点左侧卡池的卡加入 1 张；点右侧已加入的卡移除 1 张。</p>
+      </div>
+    </div>
+  </div><!-- /tab-deck -->
+</main>
+
+<!-- ========== 规则书 ========== -->
+<main id="page-rules" class="page">
+  <div class="rules-wrap">
+    <div class="section-title" style="margin-top:8px">GTCG 规则书 <span style="font-size:13px;color:var(--muted);letter-spacing:0">0.1 · 第一版正式规则 · 依据第一弹 24 张卡牌</span></div>
+
+    <h2>1 · 卡组构筑</h2>
+    <ul>
+      <li>卡组固定 <b>40 张</b>，同名卡最多 <b>4 张</b>。起手 5 张不能换。</li>
+      <li>冠军之剑开局就在双方 EX ZONE，<b>不入卡组</b>。</li>
+      <li><b>线上构筑</b>：坎友卡牌中心 →「我的卡组」可自由编辑两套卡组；线上试玩时<b>你选一套，AI 自动使用另一套</b>；卡组不足 40 张时回退随机牌组并提示。</li>
+      <li>官方预设两套：<b>虚土·守护壁垒</b>（虚/土 · 守护站场）与<b>虚光·神威门</b>（虚/光 · 检索铺场）。</li>
+    </ul>
+
+    <h2>2 · 对局准备</h2>
+    <ul>
+      <li><b>掷骰决定先后手</b>：双方各掷一颗骰子，点数大的一方先手（平局重掷）。点「开始战斗」自动掷骰。</li>
+      <li>双方各<b>起手抽 5 张</b>。</li>
+      <li>双方各自从手牌选 <b>1 张填入能量区</b>（无种类限制，以活跃状态入区）。</li>
+      <li>先手开始第一回合（<b>先手第一回合不抽牌</b>，后手第一回合抽 1 张）。</li>
+    </ul>
+
+    <h2>3 · 回合流程</h2>
+    <ul>
+      <li>一个回合依次经过 <b>抽牌阶段 → 填能阶段 → 主要阶段 → 战斗阶段</b>，<b>不可回退</b>：一旦进入下一阶段，就不能再进行上一阶段的操作。</li>
+      <li><b>抽牌阶段</b>：能量区全部解除横置（恢复）→ 抽 1 张（先手第一回合不抽，后手第一回合抽 1）。抽完自动进入填能阶段。</li>
+      <li><b>填能阶段</b>：每回合最多填 1 张，从手牌任意卡填入，活跃状态入区。<b>可以跳过</b>——跳过、或直接进入主要阶段后，本回合<b>不能再填能量</b>。</li>
+      <li><b>主要阶段</b>：<b>只有此阶段能出牌</b>，出牌次数不限，费用够就能用；支付费用时由玩家自己指定横置哪几张能量卡；行动卡（事件卡）结算完进废弃区。</li>
+      <li><b>战斗阶段</b>：<b>只有此阶段能发起攻击</b>（见第 6 节）。</li>
+      <li><b>回合结束</b>：回合结束时点效果结算；本回合内被降低的战力恢复原值。</li>
+    </ul>
+
+    <h2>4 · 能量区与支付</h2>
+    <ul>
+      <li>能量区的卡<b>横置＝使用（支付费用）</b>，每回合开始恢复。</li>
+      <li>每回合最多填 1 张（<b>填能阶段</b>，可跳过），无种类限制，活跃入区。</li>
+      <li><b>属性支付</b>：单属性卡 → 支付中至少 1 张同属性即可；多属性卡 → 每种属性各至少 1 张。</li>
+      <li><b>能量卡的属性可指定</b>：能量区里的卡可当作卡面上的任意一种属性使用，每次支付时指定，一次只算一种。</li>
+      <li><b>共鸣值上限 12</b>，满了不再增加。</li>
+    </ul>
+
+    <h2>5 · 登场与共鸣</h2>
+    <ul>
+      <li>角色当回合上场<b>不能攻击</b>，但不需要横置进场（以活跃状态登场）。</li>
+      <li><b>共鸣 ＝ 专属武器装备到对应专属角色身上</b>。</li>
+      <li><b>[共鸣时]</b>：专属武器装到专属角色身上的那一刻触发。</li>
+      <li><b>共鸣状态</b>：专属武器在专属角色身上期间。共鸣状态当回合就可以攻击（无视登场限制）。</li>
+      <li><b>解除</b>：武器被卸下 → 角色恢复普通状态；角色被击破 → 共鸣状态自然消失。</li>
+      <li>沉默的 <b>[共鸣中]</b> ＝ 处于共鸣状态中；装在别的角色身上无此状态。</li>
+    </ul>
+
+    <h2>6 · 战斗结算</h2>
+    <ul>
+      <li>可攻击<b>对手角色</b>或<b>对手玩家（本体）</b>。</li>
+      <li>默认只能攻击<b>疲劳（横置）</b>的对手角色；<b>突袭</b>＝可以攻击<b>活跃（竖置）</b>的对手角色。</li>
+      <li>疲劳的角色也会反伤。</li>
+      <li><b>战力比大小</b>：赢家减去输家战力对应的战力（例：4000 打 2000 → 赢方本回合内战力变 2000，回合结束恢复）；<b>输家被击破</b>（例：4000 打 5000 → 攻击方被击破，防守方战力变 1000）；<b>平点双方都被击破</b>。</li>
+      <li>攻击结算后攻击者<b>横置</b>（打本体也一样横置，此外无其他限制）。</li>
+      <li><b>命中玩家本体 → +1 共鸣值</b>（目前唯一来源）。</li>
+      <li>共鸣值<b>满 12 → 在自己场上召唤冠军之剑</b>（进 EX ZONE）。召唤不消耗共鸣值。</li>
+      <li><b>冠军之剑</b>：战力显示 9999，实际视为无限大；可以被阻挡，但<b>阻挡它的角色必死</b>（必定击杀）；无人能拦截、命中对方本体 → <b>直接获得胜利</b>。召唤当回合不能攻击，攻击后横置，<b>无法离场</b>（不会死、不会被弹回手）。</li>
+      <li><b>守护</b>：一回合只能守护一次（守护后横置；若有效果使其恢复活跃，可再守护一次）；疲劳状态的守护角色无法阻挡。守护结算按一般战斗（含反伤）。</li>
+      <li>被击破的角色<b>连同身上装备一起进废弃区</b>。<b>战力被减到 0 ＝ 被击破</b>。</li>
+    </ul>
+
+    <h2>7 · 其他规则</h2>
+    <ul>
+      <li>重整恢复的角色本回合不能攻击；以后会有能二次攻击的卡，但不是重整词条。</li>
+      <li><b>牌库抽空</b>：当回合不会死；只有在必须抽牌而抽不了的时候才输。</li>
+      <li><b>无任何上限</b>：手牌、场上角色数、能量区均无上限。</li>
+      <li><b>EX ZONE</b> ＝ 额外区域：放置额外卡牌（如冠军之剑），后续有更多用途。</li>
+      <li><b>多属性</b>：目前用于支付；以后会有属性增益效果——多属性卡能同时吃到多种属性的增益。</li>
+      <li><b>「使用时」类静态效果</b>（如掌门陶禹「使用「神威门」卡牌时：抽 1 张牌」）：只在使用者<b>当时已经在场上</b>的角色上生效，因此<b>刚登场的陶禹不会触发自己</b>。场上有 N 张陶禹，使用一张「神威门」卡就抽 N 张（「神威门」看阵营标签，不要求卡名含这三个字）。</li>
+      <li><b>检索类「查看牌库顶若干张，取其中 1 张」</b>（如佩儿）：由使用者<b>本人点选</b>取哪一张，系统不代为决定；其余牌置于牌库底。</li>
+    </ul>
+
+    <h2>8 · 关键词定义</h2>
+    <table class="kw-table">
+      <tr><th>关键词</th><th>定义</th></tr>
+      <tr><td>守护</td><td>此角色可以阻挡对手对你或你的其他角色发起的攻击。一回合一次；疲劳时无法阻挡。</td></tr>
+      <tr><td>突袭</td><td>此角色可以攻击活跃（竖置）状态的对手角色。</td></tr>
+      <tr><td>响应</td><td>此卡可以在对手的回合中使用。</td></tr>
+      <tr><td>泛用</td><td>此角色可以装备任意武器。</td></tr>
+      <tr><td>重整</td><td>将此角色恢复为活跃状态，本回合中，此角色不能攻击。</td></tr>
+    </table>
+
+    <h2>9 · 术语</h2>
+    <ul>
+      <li><b>力量＝战力</b>。</li>
+      <li><b>共鸣</b>＝专属武器装备到专属角色身上（及其状态）。</li>
+      <li><b>[攻击时]</b>＝发起攻击时发动。</li>
+      <li><b>持续期</b>：效果未写时效＝永久（如伊娃授予的守护）。</li>
+    </ul>
+
+    <h2>10 · 待修正的卡面</h2>
+    <ul>
+      <li>霸王冰焰弹：卡图为占位红字，待换。</li>
+      <li>利贝拉 [攻击时]：语义已定为「选择对手 1 名角色，其本回合战力 -1000」，建议卡面文本改写明确。</li>
+    </ul>
+
+    <p class="quote">规则版本 0.1（2026-10-13 定稿）。此前所有推导草案均被本版取代。</p>
+  </div>
+</main>
+
+<!-- ========== 坎友圈（论坛） ========== -->
+<main id="page-community" class="page">
+  <div class="forum-wrap">
+    <div class="section-title" style="margin-top:8px">坎友圈 <span style="font-size:13px;color:var(--muted);letter-spacing:0">坎友们的交流社区</span></div>
+
+    <div id="forum-list-view">
+      <div class="cat-tabs filter-group" id="forum-cats"></div>
+
+      <div class="compose">
+        <div class="compose-head">
+          <input id="f-nick" type="text" placeholder="你的昵称" maxlength="16">
+          <select id="f-cat"></select>
+        </div>
+        <input id="f-title" type="text" placeholder="帖子标题" maxlength="50">
+        <textarea id="f-content" placeholder="说点什么吧…（讨论卡牌、分享同人、约对战都可以）"></textarea>
+        <div class="compose-foot"><button id="f-post" class="btn primary">发布帖子</button></div>
+      </div>
+
+      <div id="thread-list"></div>
+    </div>
+
+    <div id="forum-detail-view" style="display:none">
+      <span class="back-link">← 返回坎友圈</span>
+      <div id="thread-detail"></div>
+      <div class="reply-compose">
+        <div class="rc-row"><input id="r-nick" type="text" placeholder="你的昵称" maxlength="16"></div>
+        <textarea id="r-content" placeholder="写下你的回复…"></textarea>
+        <div class="compose-foot"><button id="r-post" class="btn primary">回复</button></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ========== 线上试玩 ========== -->
+<main id="page-play" class="page">
+  <div class="game-wrap">
+    <div class="g-title" style="margin-bottom:12px">GTCG 线上试玩 <span style="font-size:12px;color:var(--muted);letter-spacing:0">规则 0.1 · 你 vs 电脑 · 双方各用一套 40 张构筑卡组 · 属性：光 / 土 / 虚</span></div>
+
+    <div class="play-layout">
+      <!-- 左栏：回合信息 + 战报 -->
+      <div class="play-left">
+        <div class="side-card">
+          <div class="side-head">回合信息</div>
+          <div class="turn-big" id="turn-num">第 1 回合</div>
+          <div class="turn-owner" id="g-turn-label"></div>
+          <div class="side-sub">当前阶段 <b id="g-cur-phase">填能阶段</b></div>
+          <div class="side-sub">你的卡组 <b id="my-deck-name">—</b></div>
+          <div class="side-sub">你 · 手牌 <b id="my-hand-num">5</b></div>
+          <div class="side-sub">能量（可用/总）<b id="my-energy-num">0/0</b></div>
+          <div class="side-sub">填能量 <b id="my-fill-state">未填</b>（每回合限 1 张）</div>
+        </div>
+        <div class="side-card side-log-card">
+          <div class="side-head">战报</div>
+          <div class="g-log" id="g-log"></div>
+        </div>
+      </div>
+
+      <!-- 中栏：场地 + 斗地主式手牌（16:9 一屏） -->
+      <div class="play-center">
+      <div class="g-mat" id="g-mat">
+        <div class="g-half g-half-a"></div>
+        <div class="g-half g-half-p"></div>
+
+        <!-- AI 半场（镜像：费用区在顶部，战场贴中线；左列=AI牌库/废弃，右列=AI共鸣值/EX） -->
+        <div class="gzone g-pile" id="z-discard-a"></div>
+        <div class="gzone g-pile" id="z-deck-a"></div>
+        <div class="gzone g-ex-zone" id="z-ex-a"></div>
+        <div class="gzone g-res-zone" id="z-res-a">
+          <div class="g-res-row"><span>AI</span><div class="g-res-bar"><div id="res-bar-a"></div></div><b id="res-a">0</b><span>/12</span></div>
+        </div>
+        <div class="gzone g-energy-zone-a" id="z-energy-a"></div>
+        <div class="g-field-zone" id="z-field-a"></div>
+
+        <!-- 玩家半场（战场贴中线上方，费用区在横线下方；左列=共鸣值/EX，右列=牌库/废弃） -->
+        <div class="g-field-zone" id="z-field-p"></div>
+        <div class="gzone g-energy-zone" id="z-energy"></div>
+        <div class="gzone g-res-zone" id="z-res-p">
+          <div class="g-res-row"><span>你</span><div class="g-res-bar"><div id="res-bar-p"></div></div><b id="res-p">0</b><span>/12</span></div>
+          <div class="g-mini-label">命中本体 +1</div>
+        </div>
+        <div class="gzone g-ex-zone" id="z-ex"></div>
+        <div class="gzone g-pile" id="z-deck"></div>
+        <div class="gzone g-pile" id="z-discard"></div>
+
+        <!-- 开局遮罩：点【开始战斗】掷骰定先手后才开始 -->
+        <div class="g-start" id="g-start">
+          <div class="g-start-box">
+            <div class="g-start-title">准备战斗</div>
+            <div class="g-start-sub" id="g-start-sub">双方各 40 张卡组，起手 5 张</div>
+            <button class="btn primary g-start-btn" id="g-start-btn">🎲 开始战斗 · 掷骰定先手</button>
+            <div class="g-start-hint">双方各掷一颗骰子，点数大者先手；先手第一回合不抽牌</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 手牌＝悬浮覆盖层（斗地主式）：不再占布局高度，浮在棋盘上方；
+           dock 左侧的按钮切换显示/隐藏 -->
+      <div class="g-hand-dock" id="g-hand-dock">
+        <!-- 前场填能区：费用区在棋盘 82% 处、会被手牌悬浮层压住，
+             填能阶段在这里亮出一个看得见、够得着的等价落点 -->
+        <div class="g-fillzone" id="g-fillzone">⚡ 填入能量区</div>
+        <button class="g-hand-toggle" id="g-hand-toggle" type="button">隐藏手牌</button>
+        <div class="g-hand" id="g-hand"></div>
+      </div>
+      </div>
+
+      <!-- 右栏：对战卡组选择 + 对手信息 + 操作（结束回合在右下） -->
+      <div class="play-right">
+        <!-- 对战卡组选择：你选一套，AI 用另一套（从中栏顶部移到这里，把高度全让给场地） -->
+        <div class="deck-picker" id="deck-picker">
+          <span class="dpk-label">⚔ 对战卡组</span>
+          <div class="dpk-row" id="deck-picker-row"></div>
+          <div class="dpk-note" id="deck-picker-note"></div>
+          <a class="btn tiny" data-page="cards" onclick="document.querySelector('#cards-tabs .tab[data-tab=\'deck\']').click()">去构筑 →</a>
+        </div>
+        <div class="side-card">
+          <div class="side-head">🖥️ 对手 AI</div>
+          <div class="side-sub">AI 卡组 <b id="ai-deck-name">—</b></div>
+          <div class="side-sub">共鸣值 <b id="ai-res-num">0</b>/12</div>
+          <div class="side-sub">手牌 <b id="ai-hand-num">5</b> 张</div>
+          <div class="side-sub">牌库 <b id="ai-deck-num">40</b> · 废弃 <b id="ai-discard-num">0</b></div>
+          <div class="side-sub">能量（可用/总）<b id="ai-energy-num">0/0</b></div>
+          <div class="side-sub">冠军之剑 <b id="ai-sword-state">EX 待命</b></div>
+        </div>
+        <div class="side-card side-ops">
+          <div class="side-head">阶段</div>
+          <div class="g-phases" id="g-phases">
+            <span data-ph="draw">抽牌</span><i>›</i>
+            <span data-ph="fill">填能</span><i>›</i>
+            <span data-ph="main">主要</span><i>›</i>
+            <span data-ph="battle">战斗</span>
+          </div>
+          <div class="g-phase-note">进入下一阶段后，就不能再做上一阶段的操作</div>
+          <button id="g-end" class="btn primary g-end-btn">跳过填能 → 主要阶段</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="g-hint"><b>点场地中央【开始战斗】掷骰定先手</b>（双方各掷一颗，点数大者先手；先手第一回合不抽牌，后手第一回合抽 1 张）。场地＝两张半场图原比例拼接（上半为 AI 视角旋转 180°）：你的战场贴中线<b>下方</b>，AI 战场贴中线<b>上方</b>，每半场横线下方＝费用区；手牌悬浮在你的费用区前方（斗地主式）。<b>冠军之剑开局就在双方 EX ZONE</b>，共鸣值满 12 移至自己战场（当回合不能攻击），剑命中本体直接获胜。<br><b>回合按阶段推进，不可回退</b>：抽牌 →（自动）→ <b>填能阶段</b>（拖 1 张手牌到费用区填入，或点右下按钮跳过；跳过/进入下一阶段后本回合不能再填能）→ <b>主要阶段</b>（拖手牌到自己半场打出角色/事件，装备卡拖到角色身上；点选需要横置的能量卡自己付费用）→ <b>战斗阶段</b>（拖动己方角色 → 拖到敌方角色上＝攻击它（可攻击的会亮红框）、拖到对面半场＝直接打脸）→ 结束回合。<b>重新开始</b>按钮已移到屏幕右下角（需二次确认），防误触。</p>
+
+    <button id="g-restart" class="g-restart-fab" title="重新开始对局（会二次确认）">↻ 重新开始</button>
+  </div>
+</main>
+
+<div class="modal-mask" id="modal-mask">
+  <div class="modal">
+    <span class="m-close" id="m-close">✕</span>
+    <div class="m-img"><img id="m-img" class="card-img" src="" alt=""></div>
+    <div class="m-body">
+      <div class="m-type-line" id="m-type-line"></div>
+      <h2 id="m-name"></h2>
+      <div class="m-stats" id="m-stats"></div>
+      <div class="m-text" id="m-text"></div>
+      <div class="m-flavor" id="m-flavor"></div>
+      <div class="m-note" id="m-note" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <b>坎友会 GUARDIAN GUILD</b> · UNOFFICIAL FAN MADE · GUARDIAN TALES CARD GAME（GTCG）<br>
+  卡牌版权归原作者与 Kong Studios / Yustin Inc. 所有，本站为粉丝自制项目
+</footer>
+
+<!-- ===== 移动端横屏提示：必须在 game.js 之前进入 DOM（game.js 启动时要绑它） ===== -->
+<div id="g-rotate">
+  <div class="grot-box">
+    <div class="grot-phone"></div>
+    <div class="grot-title">请横屏使用</div>
+    <div class="grot-sub">
+      对局场地按<b>横向</b>设计，竖屏无法完整显示战场与手牌。<br>
+      把手机<b>横过来</b>即可自动开始对局。
+    </div>
+    <a class="grot-force" id="g-rotate-force">仍要竖屏继续 →</a>
+  </div>
+</div>
+
+<script src="js/cards-data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tencent-ai/workbuddy-cloud-sdk@dev/lib/index.global.js"></script>
+<script src="js/cloud-config.js"></script>
+<script src="js/main.js"></script>
+<script src="js/deck.js"></script>
+<script src="js/game.js"></script>
+<script src="js/forum.js"></script>
+<script>
+  // 首页扇形卡牌展示 + 统计
+  (function () {
+    const picks = ["card05", "card24", "card10", "card01", "card16"];
+    const homeCards = document.getElementById("home-cards");
+    homeCards.innerHTML = picks.map(id => {
+      const c = CARDS.find(x => x.id === id);
+      return `<img class="fan card-img" src="${c.img}" alt="${c.name}" loading="lazy">`;
+    }).join("");
+    homeCards.querySelectorAll(".fan").forEach((el, i) => {
+      el.style.cursor = "pointer";
+      el.addEventListener("click", () => { location.hash = "cards"; });
+    });
+    document.getElementById("stat-total").textContent = CARDS.length;
+    document.getElementById("stat-char").textContent = CARDS.filter(c => c.type === "角色").length;
+    document.getElementById("stat-event").textContent = CARDS.filter(c => c.type === "事件").length;
+  })();
+</script>
+</body>
+</html>
